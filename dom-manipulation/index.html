@@ -14,11 +14,11 @@
     <option value="all">All Categories</option>
   </select>
 
-  <!-- Display Area -->
+  <!-- Display Quote -->
   <div id="quoteDisplay"></div>
   <button id="newQuote">Show New Quote</button>
 
-  <!-- Add New Quote -->
+  <!-- Add Quote -->
   <div>
     <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
     <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
@@ -29,11 +29,11 @@
   <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
   <button onclick="exportToJsonFile()">Export Quotes</button>
 
-  <!-- Manual Sync Button -->
-  <button onclick="syncWithServer()">Sync Now</button>
+  <!-- Manual Sync -->
+  <button onclick="syncQuotes()">Sync Now</button>
 
-  <!-- Sync Notification -->
-  <div id="syncNotice" style="color: green; font-weight: bold;"></div>
+  <!-- Notification Area -->
+  <div id="syncNotice" style="color: green; font-weight: bold; margin-top: 10px;"></div>
 
   <script src="script.js"></script>
 </body>
