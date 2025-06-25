@@ -9,32 +9,40 @@ function saveQuotes() {
   localStorage.setItem("quotes", JSON.stringify(quotes));
 }
 
-// Fetch quotes from mock API
-function fetchQuotesFromServer() {
-  return fetch("https://jsonplaceholder.typicode.com/posts")
-    .then(response => response.json())
-    .then(data =>
-      data.slice(0, 5).map(post => ({
-        text: post.title,
-        category: post.body
-      }))
-    );
+// Fetch quotes from mock API using async/await
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const data = await response.json();
+    return data.slice(0, 5).map(post => ({
+      text: post.title,
+      category: post.body
+    }));
+  } catch (error) {
+    console.error("Error fetching quotes:", error);
+    return [];
+  }
 }
 
-// Post quote to mock API (simulated)
-function postQuoteToServer(quote) {
-  return fetch("https://jsonplaceholder.typicode.com/posts", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(quote)
-  })
-    .then(response => response.json())
-    .then(data => console.log("Posted to server:", data));
+// Post quote to mock API using async/await
+async function postQuoteToServer(quote) {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(quote)
+    });
+    const result = await response.json();
+    console.log("Posted to server:", result);
+  } catch (error) {
+    console.error("Failed to post quote:", error);
+  }
 }
 
-// Sync quotes with server and resolve conflicts
-function syncQuotes() {
-  fetchQuotesFromServer().then(serverQuotes => {
+// Sync quotes with server using async/await and resolve conflicts
+async function syncQuotes() {
+  try {
+    const serverQuotes = await fetchQuotesFromServer();
     let updated = false;
 
     serverQuotes.forEach(serverQuote => {
@@ -50,12 +58,12 @@ function syncQuotes() {
       populateCategories();
       displayNotification("Quotes synced from server.");
     }
-  }).catch(() => {
+  } catch (err) {
     displayNotification("Failed to sync with server.");
-  });
+  }
 }
 
-// Show notification
+// Show notification message
 function displayNotification(message) {
   const notice = document.getElementById("syncNotice");
   notice.textContent = message;
@@ -64,7 +72,7 @@ function displayNotification(message) {
   }, 4000);
 }
 
-// Show a random quote
+// Show a random quote based on selected category
 function showRandomQuote() {
   const selectedCategory = document.getElementById("categoryFilter").value;
   const filteredQuotes = selectedCategory === "all"
@@ -99,7 +107,7 @@ function addQuote() {
   }
 }
 
-// Populate categories in the dropdown
+// Populate category dropdown
 function populateCategories() {
   const dropdown = document.getElementById("categoryFilter");
   const categories = [...new Set(quotes.map(q => q.category))];
@@ -126,7 +134,7 @@ function filterQuotes() {
   showRandomQuote();
 }
 
-// Export quotes as JSON
+// Export quotes to a JSON file
 function exportToJsonFile() {
   const blob = new Blob([JSON.stringify(quotes, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -137,7 +145,7 @@ function exportToJsonFile() {
   URL.revokeObjectURL(url);
 }
 
-// Import quotes from uploaded JSON
+// Import quotes from a JSON file
 function importFromJsonFile(event) {
   const reader = new FileReader();
   reader.onload = function (e) {
@@ -165,7 +173,7 @@ function importFromJsonFile(event) {
   reader.readAsText(event.target.files[0]);
 }
 
-// Initialization
+// Initialize app
 window.onload = function () {
   populateCategories();
 
@@ -176,5 +184,5 @@ window.onload = function () {
   }
 
   document.getElementById("newQuote").addEventListener("click", showRandomQuote);
-  setInterval(syncQuotes, 30000); // automatic sync every 30 seconds
+  setInterval(syncQuotes, 30000); // Sync every 30 seconds
 };
