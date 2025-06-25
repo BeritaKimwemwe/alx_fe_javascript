@@ -56,7 +56,7 @@ async function syncQuotes() {
     if (updated) {
       saveQuotes();
       populateCategories();
-      displayNotification("Quotes synced with server.");
+      displayNotification("Quotes synced with server!");
     }
   } catch (err) {
     displayNotification("Failed to sync with server.");
