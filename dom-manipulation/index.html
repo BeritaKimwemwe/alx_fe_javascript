@@ -14,7 +14,7 @@
     <option value="all">All Categories</option>
   </select>
 
-  <!-- Display Random Quote -->
+  <!-- Display Area -->
   <div id="quoteDisplay"></div>
   <button id="newQuote">Show New Quote</button>
 
@@ -25,9 +25,15 @@
     <button onclick="addQuote()">Add Quote</button>
   </div>
 
-  <!-- JSON Import/Export -->
+  <!-- Import/Export -->
   <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
   <button onclick="exportToJsonFile()">Export Quotes</button>
+
+  <!-- Manual Sync Button -->
+  <button onclick="syncWithServer()">Sync Now</button>
+
+  <!-- Sync Notification -->
+  <div id="syncNotice" style="color: green; font-weight: bold;"></div>
 
   <script src="script.js"></script>
 </body>
